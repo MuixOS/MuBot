@@ -1,4 +1,4 @@
-import { createBot, Intents, startBot, sendMessage, editMessage, Message, addReaction } from "https://deno.land/x/discordeno@13.0.0/mod.ts"
+import { createBot, Intents, startBot, sendMessage, editMessage, Message, addReaction, editBotStatus, ActivityTypes } from "https://deno.land/x/discordeno@13.0.0/mod.ts"
 import * as Brigadier from "npm:brigadier-ts"
 import env from "./env.json" assert { type: "json" }
 
@@ -7,13 +7,22 @@ const sleep = (time: number) => new Promise((r) => setTimeout(r, time))
 let threads: bigint[] = []
 
 const dispatcher: Brigadier.CommandDispatcher<Message> = new Brigadier.CommandDispatcher()
-
 const bot = createBot({
     token: env.token,
     intents: Intents.Guilds | Intents.GuildMessages | Intents.MessageContent,
     events: {
         ready() {
-            console.log("Successfully connected to gateway");
+            console.log("Successfully connected to gateway")
+            editBotStatus(bot, {
+                activities: [
+                    {
+                        createdAt: 0,
+                        type: ActivityTypes.Game,
+                        name: "m'uix"
+                    }
+                ],
+                status: "online"
+            })
         },
         async threadCreate(_, thread) {
             if (threads.indexOf(thread.id) != -1) return
