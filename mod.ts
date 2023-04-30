@@ -2,6 +2,8 @@ import { createBot, Intents, startBot, sendMessage, editMessage, Message, addRea
 import * as Brigadier from "npm:brigadier-ts"
 import env from "./env.json" assert { type: "json" }
 
+const sleep = (time: number) => new Promise((r) => setTimeout(r, time))
+
 let threads: bigint[] = []
 
 const dispatcher: Brigadier.CommandDispatcher<Message> = new Brigadier.CommandDispatcher()
@@ -21,11 +23,10 @@ const bot = createBot({
                 content: "Adding people to the thread..."
             })
 
-            setTimeout(async () => {
-                await editMessage(bot, thread.id, message.id, {
-                    content: "<@&1102016351813509261>, welcome!"
-                })
-            }, 500)
+            await sleep(500)
+            editMessage(bot, thread.id, message.id, {
+                content: "<@&1102016351813509261>, welcome!"
+            })
         },
         messageCreate(_, message) {
             if (message.isFromBot || message.webhookId) return 
@@ -40,8 +41,6 @@ const bot = createBot({
         }
     },
 })
-
-const sleep = (time: number) => new Promise((r) => setTimeout(r, time))
 
 let pollEmotes = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"]
 
