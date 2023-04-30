@@ -24,7 +24,7 @@ const bot = createBot({
             })
 
             await sleep(500)
-            
+
             editMessage(bot, thread.id, message.id, {
                 content: "<@&1102016351813509261>, welcome!"
             })
@@ -57,7 +57,7 @@ async function poll(name: string, options: string[], channelId: bigint) {
 
     let i = 0
     for (let opt of options) {
-        content += `${pollEmotes[i]} ${opt}\n`
+        content += `${pollEmotes[i]} ${opt.trim()}\n`
         i++
     }
 
